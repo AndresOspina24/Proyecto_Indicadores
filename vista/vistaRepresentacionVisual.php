@@ -226,10 +226,7 @@ switch ($boton) {
 									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
 								</div>
 								<div class="form-group">
-									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
-									<input type="submit" id="btnConsultar" name="bt" class="btn btn-success" value="Consultar">
 									<input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">
-									<input type="submit" id="btnBorrar" name="bt" class="btn btn-warning" value="Borrar">
 								</div>
 							</div>
 							<div id="menu1" class="container tab-pane fade"><br>
