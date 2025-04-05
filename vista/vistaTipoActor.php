@@ -18,10 +18,10 @@ ob_start();
 
 ?>
 <?php
-$arregloRepresenVisualConsulta=[];
+$arregloTiposActorConsulta=[];
 
-$objControlRepresenVisual = new ControlEntidad('represenvisual');
-$arregloRepresenVisual = $objControlRepresenVisual->listar();
+$objControlTipoActor = new ControlEntidad('tipoactor');
+$arregloTiposActor = $objControlTipoActor->listar();
 //var_dump($arregloRoles);
 
 //$boton = "";
@@ -38,20 +38,20 @@ switch ($boton) {
     case 'Guardar':
 		// Se debería llamar a un procedimiento almacenado con control de transacciones
 		//para guardar en las dos tablas 
-		$datosRepresenVisual = ['id' => $id, 'nombre' => $nombre];
-		$objRepresenVisual= new Entidad($datosRepresenVisual);
-		$objControlRepresenVisual = new ControlEntidad('represenvisual');
-		$objRepresenVisual->guardar($objRepresenVisual);
-		header('Location: vistaRepresentacionVisual.php');
+		$datosTipoActor = ['id' => $id, 'nombre' => $nombre];
+		$objTipoActor= new Entidad($datosTipoActor);
+		$objControlTipoActor = new ControlEntidad('tipoactor');
+		$objControlTipoActor->guardar($objTipoActor);
+		header('Location: vistaTipoActor.php');
 		break;
 
     case 'Consultar':
-		$datosRepresenVisual=['id' => $id];
-		$objRepresenVisual = new Entidad($datosRepresenVisual); 
-		$objControlRepresenVisual = new ControlEntidad('represenvisual');
-		$objRepresenVisual = $objControlRepresenVisual->buscarPorId('id', $id);
-		if ($objRepresenVisual !== null) {
-			$nombre = $objRepresenVisual->__get('nombre');
+		$datosTipoActor=['id' => $id];
+		$objTipoActor = new Entidad($datosTipoActor); 
+		$objControlTipoActor = new ControlEntidad('tipoactor');
+		$objTipoActor = $objControlTipoActor->buscarPorId('id', $id);
+		if ($objTipoActor !== null) {
+			$nombre = $objTipoActor->__get('nombre');
 		} else {
 			// Manejar el caso en que $objUsuario es nulo
 			echo "El usuario no se encontró.";
@@ -61,18 +61,18 @@ switch ($boton) {
 		// Se debería llamar a un procedimiento almacenado con control de transacciones
 		//para modificar en las dos tablas
 		//1. modifica en tabla principal    
-        $datosRepresenVisual = ['id' => $id, 'nombre' => $nombre];
-        $objRepresenVisual=new Entidad($datosRepresenVisual);
-        $objControlRepresenVisual = new ControlEntidad('represenvisual');
-        $objControlRepresenVisual->modificar('id', $id, $objRepresenVisual);
-		header('Location: vistaRepresentacionVisual.php');
+        $datosTipoActor = ['id' => $id, 'nombre' => $nombre];
+        $objTipoActor=new Entidad($datosTipoActor);
+        $objControlTipoActor = new ControlEntidad('tipoactor');
+        $objControlTipoActor->modificar('id', $id, $objTipoActor);
+		header('Location: vistaTipoActor.php');
         break;
     case 'Borrar':
-        $datosRepresenVisual=['id' => $id];
-        $objRepresenVisual = new Entidad($datosRepresenVisual);
-        $objControlRepresenVisual= new ControlEntidad('represenvisual');
-        $objControlRepresenVisual->borrar('id', $id);
-		header('Location: vistaRepresentacionVisual.php');
+        $datosTipoActor=['id' => $id];
+        $objTipoActor = new Entidad($datosTipoActor);
+        $objControlTipoActor= new ControlEntidad('tipoactor');
+        $objControlTipoActor->borrar('id', $id);
+		header('Location: vistaTipoActor.php');
         break;
 
     default:
@@ -88,10 +88,10 @@ switch ($boton) {
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
-						<h2 class="miEstilo">Gestión <b>Sentido</b></h2>
+						<h2 class="miEstilo">Gestión <b>Tipos Actor</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE84E;</i> <span>Gestión Sentido</span></a>
+						<a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE84E;</i> <span>Gestión T.A</span></a>
 					</div>
 				</div>
 			</div>
@@ -111,7 +111,7 @@ switch ($boton) {
 				</thead>
 				<tbody>
 					<?php
-					for($i = 0; $i < count($arregloSentidos); $i++){
+					for($i = 0; $i < count($arregloTiposActor); $i++){
 					?>
 						<tr>
 							<td>
@@ -120,8 +120,8 @@ switch ($boton) {
 									<label for="checkbox1"></label>
 								</span>
 							</td>
-							<td><?php echo $arregloSentidos[$i]->__get('id');?></td>
-							<td><?php echo $arregloSentidos[$i]->__get('nombre');?></td>
+							<td><?php echo $arregloTiposActor[$i]->__get('id');?></td>
+							<td><?php echo $arregloTiposActor[$i]->__get('nombre');?></td>
 							<td>
 								<a href="#editar" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE254;</i></a>
 								<a href="#borrar" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE872;</i></a>
@@ -151,9 +151,9 @@ switch ($boton) {
 <div id="crudModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="vistaSentido.php" method="post">
+			<form action="vistaTipoActor.php" method="post">
 				<div class="modal-header">						
-					<h4 class="modal-title">Sentido</h4>
+					<h4 class="modal-title">Tipo Actor</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -162,7 +162,7 @@ switch ($boton) {
 						<!-- Nav tabs -->
 						<ul class="nav nav-tabs" role="tablist">
 							<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Sentido</a>
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Tipos Actor</a>
 							</li>
 						</ul>
 						<!-- Tab panes -->
@@ -200,9 +200,9 @@ switch ($boton) {
 <div id="editar" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="vistaSentido.php" method="post">
+			<form action="vistaTipoActor.php" method="post">
 				<div class="modal-header">						
-					<h4 class="modal-title">Sentido</h4>
+					<h4 class="modal-title">Tipo Actor</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -211,7 +211,7 @@ switch ($boton) {
 						<!-- Nav tabs -->
 						<ul class="nav nav-tabs" role="tablist">
 							<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Sentido</a>
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Tipos Actor</a>
 							</li>
 						</ul>
 						<!-- Tab panes -->
@@ -248,9 +248,9 @@ switch ($boton) {
 <div id="borrar" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="vistaSentido.php" method="post">
+			<form action="vistaTipoActor.php" method="post">
 				<div class="modal-header">						
-					<h4 class="modal-title">Sentido</h4>
+					<h4 class="modal-title">Tipo Actor</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -259,7 +259,7 @@ switch ($boton) {
 						<!-- Nav tabs -->
 						<ul class="nav nav-tabs" role="tablist">
 							<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Sentido</a>
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Tipos Actor</a>
 							</li>
 						</ul>
 						<!-- Tab panes -->

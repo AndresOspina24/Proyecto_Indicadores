@@ -18,10 +18,10 @@ ob_start();
 
 ?>
 <?php
-$arregloRepresenVisualConsulta=[];
+$arregloSentidosConsulta=[];
 
-$objControlRepresenVisual = new ControlEntidad('represenvisual');
-$arregloRepresenVisual = $objControlRepresenVisual->listar();
+$objControlSentido = new ControlEntidad('sentido');
+$arregloSentidos = $objControlSentido->listar();
 //var_dump($arregloRoles);
 
 //$boton = "";
@@ -38,20 +38,20 @@ switch ($boton) {
     case 'Guardar':
 		// Se debería llamar a un procedimiento almacenado con control de transacciones
 		//para guardar en las dos tablas 
-		$datosRepresenVisual = ['id' => $id, 'nombre' => $nombre];
-		$objRepresenVisual= new Entidad($datosRepresenVisual);
-		$objControlRepresenVisual = new ControlEntidad('represenvisual');
-		$objRepresenVisual->guardar($objRepresenVisual);
-		header('Location: vistaRepresentacionVisual.php');
+		$datosSentido = ['id' => $id, 'nombre' => $nombre];
+		$objSentido= new Entidad($datosSentido);
+		$objControlSentido = new ControlEntidad('sentido');
+		$objControlSentido->guardar($objSentido);
+		header('Location: vistaSentido.php');
 		break;
 
     case 'Consultar':
-		$datosRepresenVisual=['id' => $id];
-		$objRepresenVisual = new Entidad($datosRepresenVisual); 
-		$objControlRepresenVisual = new ControlEntidad('represenvisual');
-		$objRepresenVisual = $objControlRepresenVisual->buscarPorId('id', $id);
-		if ($objRepresenVisual !== null) {
-			$nombre = $objRepresenVisual->__get('nombre');
+		$datosSentido=['id' => $id];
+		$objSentido = new Entidad($datosSentido); 
+		$objControlSentido = new ControlEntidad('sentido');
+		$objSentido = $objControlSentido->buscarPorId('id', $id);
+		if ($objSentido !== null) {
+			$nombre = $objSentido->__get('nombre');
 		} else {
 			// Manejar el caso en que $objUsuario es nulo
 			echo "El usuario no se encontró.";
@@ -61,18 +61,18 @@ switch ($boton) {
 		// Se debería llamar a un procedimiento almacenado con control de transacciones
 		//para modificar en las dos tablas
 		//1. modifica en tabla principal    
-        $datosRepresenVisual = ['id' => $id, 'nombre' => $nombre];
-        $objRepresenVisual=new Entidad($datosRepresenVisual);
-        $objControlRepresenVisual = new ControlEntidad('represenvisual');
-        $objControlRepresenVisual->modificar('id', $id, $objRepresenVisual);
-		header('Location: vistaRepresentacionVisual.php');
+        $datosSentido = ['id' => $id, 'nombre' => $nombre];
+        $objSentido=new Entidad($datosSentido);
+        $objControlSentido = new ControlEntidad('sentido');
+        $objControlSentido->modificar('id', $id, $objSentido);
+		header('Location: vistaSentido.php');
         break;
     case 'Borrar':
-        $datosRepresenVisual=['id' => $id];
-        $objRepresenVisual = new Entidad($datosRepresenVisual);
-        $objControlRepresenVisual= new ControlEntidad('represenvisual');
-        $objControlRepresenVisual->borrar('id', $id);
-		header('Location: vistaRepresentacionVisual.php');
+        $datosSentido=['id' => $id];
+        $objSentido = new Entidad($datosSentido);
+        $objControlSentido= new ControlEntidad('sentido');
+        $objControlSentido->borrar('id', $id);
+		header('Location: vistaSentido.php');
         break;
 
     default:
