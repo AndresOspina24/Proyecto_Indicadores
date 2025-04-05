@@ -88,10 +88,10 @@ switch ($boton) {
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
-						<h2 class="miEstilo">Gestión <b>Sentido</b></h2>
+						<h2 class="miEstilo">Gestión <b>Representacion Visual</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE84E;</i> <span>Gestión Sentido</span></a>
+						<a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE84E;</i> <span>Gestión R.V</span></a>
 					</div>
 				</div>
 			</div>
@@ -111,7 +111,7 @@ switch ($boton) {
 				</thead>
 				<tbody>
 					<?php
-					for($i = 0; $i < count($arregloSentidos); $i++){
+					for($i = 0; $i < count($arregloRepresenVisual); $i++){
 					?>
 						<tr>
 							<td>
@@ -120,8 +120,8 @@ switch ($boton) {
 									<label for="checkbox1"></label>
 								</span>
 							</td>
-							<td><?php echo $arregloSentidos[$i]->__get('id');?></td>
-							<td><?php echo $arregloSentidos[$i]->__get('nombre');?></td>
+							<td><?php echo $arregloRepresenVisual[$i]->__get('id');?></td>
+							<td><?php echo $arregloRepresenVisual[$i]->__get('nombre');?></td>
 							<td>
 								<a href="#editar" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE254;</i></a>
 								<a href="#borrar" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE872;</i></a>
@@ -153,7 +153,7 @@ switch ($boton) {
 		<div class="modal-content">
 			<form action="vistaSentido.php" method="post">
 				<div class="modal-header">						
-					<h4 class="modal-title">Sentido</h4>
+					<h4 class="modal-title">Representacion Visual</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -162,7 +162,7 @@ switch ($boton) {
 						<!-- Nav tabs -->
 						<ul class="nav nav-tabs" role="tablist">
 							<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Sentido</a>
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Representacion Visual</a>
 							</li>
 						</ul>
 						<!-- Tab panes -->
