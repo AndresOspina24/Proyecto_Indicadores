@@ -18,10 +18,10 @@ ob_start();
 
 ?>
 <?php
-$arregloFuenteConsulta=[];
+$arregloFrecuencia=[];
 
-$objControlFuente = new ControlEntidad('fuente');
-$arregloFuente = $objControlFuente->listar();
+$objControlFrecuencia = new ControlEntidad('frecuencia');
+$arregloFrecuencia = $objControlFrecuencia->listar();
 //var_dump($arregloRoles);
 
 //$boton = "";
@@ -38,20 +38,20 @@ switch ($boton) {
     case 'Guardar':
 		// Se debería llamar a un procedimiento almacenado con control de transacciones
 		//para guardar en las dos tablas 
-		$datosFuente = ['id' => $id, 'nombre' => $nombre];
-		$objFuente= new Entidad($datosFuente);
-		$objControlFuente = new ControlEntidad('fuente');
-		$objControlFuente->guardar($objFuente);
-		header('Location: vistaFuente.php');
+		$datosFrecuencia = ['id' => $id, 'nombre' => $nombre];
+		$objFrecuencia= new Entidad($datosFrecuencia);
+		$objControlFrecuencia = new ControlEntidad('frecuencia');
+		$objControlFrecuencia->guardar($objFrecuencia);
+		header('Location: vistaFrecuencia.php');
 		break;
 
     case 'Consultar':
-		$datosFuente=['id' => $id];
-		$objFuente = new Entidad($datosFuente); 
-		$objControlFuente = new ControlEntidad('fuente');
-		$objControlFuente = $objControlFuente->buscarPorId('id', $id);
-		if ($objFuente !== null) {
-			$descripcion = $objFuente->__get('nombre');
+		$datosFrecuencia=['id' => $id];
+		$objFrecuencia = new Entidad($datosFrecuencia); 
+		$objControlFrecuencia = new ControlEntidad('frecuencia');
+		$objControlFrecuencia = $objControlFrecuencia->buscarPorId('id', $id);
+		if ($objFrecuencia !== null) {
+			$descripcion = $objFrecuencia->__get('nombre');
 		} else {
 			// Manejar el caso en que $objUsuario es nulo
 			echo "El usuario no se encontró.";
@@ -61,18 +61,18 @@ switch ($boton) {
 		// Se debería llamar a un procedimiento almacenado con control de transacciones
 		//para modificar en las dos tablas
 		//1. modifica en tabla principal    
-        $datosFuente = ['id' => $id, 'nombre' => $nombre];
-        $objFuente=new Entidad($datosFuente);
-        $objControlFuente = new ControlEntidad('fuente');
-        $objControlFuente->modificar('id', $id, $objFuente);
-		header('Location: vistaFuente.php');
+        $datosFrecuencia = ['id' => $id, 'nombre' => $nombre];
+        $objFrecuencia=new Entidad($datosFrecuencia);
+        $objControlFrecuencia = new ControlEntidad('frecuencia');
+        $objControlFrecuencia->modificar('id', $id, $objFrecuencia);
+		header('Location: vistaFrecuencia.php');
         break;
     case 'Borrar':
-        $datosFuente=['id' => $id];
-        $objFuente = new Entidad($datosFuente);
-        $objControlFuente= new ControlEntidad('unidadmedicion');
-        $objControlFuente->borrar('id', $id);
-		header('Location: vistaFuente.php');
+        $datosFrecuencia=['id' => $id];
+        $objFrecuencia = new Entidad($datosFrecuencia);
+        $objControlFrecuencia= new ControlEntidad('frecuencia');
+        $objControlFrecuencia->borrar('id', $id);
+		header('Location: vistaFrecuencia.php');
         break;
 
     default:
@@ -88,7 +88,7 @@ switch ($boton) {
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
-						<h2 class="miEstilo">Gestión <b>Fuentes</b></h2>
+						<h2 class="miEstilo">Gestión <b>Frecuencia</b></h2>
 					</div>
 					<div class="col-sm-6">
 						<a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE84E;</i> <span>Gestión F</span></a>
@@ -111,7 +111,7 @@ switch ($boton) {
 				</thead>
 				<tbody>
 					<?php
-					for($i = 0; $i < count($arregloFuente); $i++){
+					for($i = 0; $i < count($arregloFrecuencia); $i++){
 					?>
 						<tr>
 							<td>
@@ -120,8 +120,8 @@ switch ($boton) {
 									<label for="checkbox1"></label>
 								</span>
 							</td>
-							<td><?php echo $arregloFuente[$i]->__get('id');?></td>
-							<td><?php echo $arregloFuente[$i]->__get('nombre');?></td>
+							<td><?php echo $arregloFrecuencia[$i]->__get('id');?></td>
+							<td><?php echo $arregloFrecuencia[$i]->__get('nombre');?></td>
 							<td>
 								<a href="#editar" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE254;</i></a>
 								<a href="#borrar" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE872;</i></a>
@@ -153,7 +153,7 @@ switch ($boton) {
 		<div class="modal-content">
 			<form action="vistaFuente.php" method="post">
 				<div class="modal-header">						
-					<h4 class="modal-title">Fuente</h4>
+					<h4 class="modal-title">Frecuencia</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -162,7 +162,7 @@ switch ($boton) {
 						<!-- Nav tabs -->
 						<ul class="nav nav-tabs" role="tablist">
 							<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Fuentes</a>
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Frecuencia</a>
 							</li>
 						</ul>
 						<!-- Tab panes -->
@@ -200,7 +200,7 @@ switch ($boton) {
 	<div class="modal-dialog">
 		<div class="modal-content">
 				<div class="modal-header">						
-					<h4 class="modal-title">Fuente</h4>
+					<h4 class="modal-title">Frecuencia</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -209,7 +209,7 @@ switch ($boton) {
 						<!-- Nav tabs -->
 						<ul class="nav nav-tabs" role="tablist">
 							<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Fuentes</a>
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Frecuencia</a>
 							</li>
 						</ul>
 						<!-- Tab panes -->
@@ -246,7 +246,7 @@ switch ($boton) {
 		<div class="modal-content">
 		<form action="vistaFuente.php" method="post">
 				<div class="modal-header">						
-					<h4 class="modal-title">Tipo Indicador</h4>
+					<h4 class="modal-title">Frecuencia</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -255,7 +255,7 @@ switch ($boton) {
 						<!-- Nav tabs -->
 						<ul class="nav nav-tabs" role="tablist">
 							<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Tipos Indicador</a>
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Frecuencia</a>
 							</li>
 						</ul>
 						<!-- Tab panes -->
@@ -293,3 +293,4 @@ switch ($boton) {
 <?php
   ob_end_flush();
 ?>
+

@@ -154,7 +154,7 @@ switch ($boton) {
 			<form action="vistaTipoIndicador.php" method="post">
 				<div class="modal-header">						
 					<h4 class="modal-title">Tipo Indicador</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<button type="button" class="close" data-dismiss="modal" >&times;</button>
 				</div>
 				<div class="modal-body">
 					
@@ -197,102 +197,43 @@ switch ($boton) {
 </div>
 
 
-<div id="editar" class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form action="vistaTipoIndicador.php" method="post">
-				<div class="modal-header">						
-					<h4 class="modal-title">Tipo Indicador</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">
-					
-						<div class="container">
-						<!-- Nav tabs -->
-						<ul class="nav nav-tabs" role="tablist">
-							<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Tipos Indicador</a>
-							</li>
-						</ul>
-						<!-- Tab panes -->
-						<div class="tab-content">
-							<div id="home" class="container tab-pane active"><br>
-							<div class="form-group">
-								<label>Id</label>
-									<input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
-								</div>
-								<div class="form-group">
-									<label>Nombre</label>
-									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
-								</div>
-								<div class="form-group">
-									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
-									<input type="submit" id="btnConsultar" name="bt" class="btn btn-success" value="Consultar">
-									<input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">
-									<input type="submit" id="btnBorrar" name="bt" class="btn btn-warning" value="Borrar">
-								</div>
-							</div>
-							<div id="menu1" class="container tab-pane fade"><br>
-
-						</div>
-						</div>						
-				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-				</div>
-			</form>
-		</div>
-	</div>
+<div id="editar" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+	<form action="vistaTipoIndicador.php" method="post">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div id="borrar" class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form action="vistaTipoIndicador.php" method="post">
-				<div class="modal-header">						
-					<h4 class="modal-title">Tipo Indicador</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">
-					
-						<div class="container">
-						<!-- Nav tabs -->
-						<ul class="nav nav-tabs" role="tablist">
-							<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Tipos Indicador</a>
-							</li>
-						</ul>
-						<!-- Tab panes -->
-						<div class="tab-content">
-							<div id="home" class="container tab-pane active"><br>
-							<div class="form-group">
-								<label>Id</label>
-									<input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
-								</div>
-								<div class="form-group">
-									<label>Nombre</label>
-									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
-								</div>
-								<div class="form-group">
-									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
-									<input type="submit" id="btnConsultar" name="bt" class="btn btn-success" value="Consultar">
-									<input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">
-									<input type="submit" id="btnBorrar" name="bt" class="btn btn-warning" value="Borrar">
-								</div>
-							</div>
-							<div id="menu1" class="container tab-pane fade"><br>
-
-						</div>
-						</div>						
-				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-				</div>
-			</form>
-		</div>
-	</div>
+<div class="borrar" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+	<form action="vistaTipoIndicador.php" method="post">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>
-
 
 
 <?php include "../vista/basePie.html" ?>

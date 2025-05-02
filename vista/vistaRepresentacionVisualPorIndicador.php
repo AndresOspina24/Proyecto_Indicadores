@@ -18,10 +18,10 @@ ob_start();
 
 ?>
 <?php
-$arregloFuenteConsulta=[];
+$arregloRepresentacionVisualPorIndicador=[];
 
-$objControlFuente = new ControlEntidad('fuente');
-$arregloFuente = $objControlFuente->listar();
+$objControlRepresentacionVisualPorIndicador = new ControlEntidad('represenvisualporindicador');
+$arregloRepresentacionVisualPorIndicador = $objControlRepresentacionVisualPorIndicador->listar();
 //var_dump($arregloRoles);
 
 //$boton = "";
@@ -29,56 +29,30 @@ $arregloFuente = $objControlFuente->listar();
 
 //$boton = isset($_POST['bt']) ? $_POST['bt'] : ""; //En PHP 7
 
-$boton = $_POST['bt'] ?? ''; // Captura el valor del botón
-$id = $_POST['txtId'] ?? ''; // Captura el email del formulario
-$nombre = $_POST['txtNombre'] ?? ''; // Captura la contraseña del formulario
-$listbox1 = $_POST['listbox1'] ?? []; // Captura los roles seleccionados
+$arreglo = [];
+$objControlRepresentacionVisualPorIndicador = new ControlEntidad('represenvisualporindicador');
+$arreglo = $objControlRepresentacionVisualPorIndicador->listar();
+
+$boton = $_POST['bt'] ?? '';
+$fkidindicador = $_POST['txtIndicador'] ?? '';
+$fkidrepresenvisual = $_POST['txtRepresenVisual'] ?? '';
 
 switch ($boton) {
     case 'Guardar':
-		// Se debería llamar a un procedimiento almacenado con control de transacciones
-		//para guardar en las dos tablas 
-		$datosFuente = ['id' => $id, 'nombre' => $nombre];
-		$objFuente= new Entidad($datosFuente);
-		$objControlFuente = new ControlEntidad('fuente');
-		$objControlFuente->guardar($objFuente);
-		header('Location: vistaFuente.php');
-		break;
-
-    case 'Consultar':
-		$datosFuente=['id' => $id];
-		$objFuente = new Entidad($datosFuente); 
-		$objControlFuente = new ControlEntidad('fuente');
-		$objControlFuente = $objControlFuente->buscarPorId('id', $id);
-		if ($objFuente !== null) {
-			$descripcion = $objFuente->__get('nombre');
-		} else {
-			// Manejar el caso en que $objUsuario es nulo
-			echo "El usuario no se encontró.";
-		}
-		break;
-    case 'Modificar':
-		// Se debería llamar a un procedimiento almacenado con control de transacciones
-		//para modificar en las dos tablas
-		//1. modifica en tabla principal    
-        $datosFuente = ['id' => $id, 'nombre' => $nombre];
-        $objFuente=new Entidad($datosFuente);
-        $objControlFuente = new ControlEntidad('fuente');
-        $objControlFuente->modificar('id', $id, $objFuente);
-		header('Location: vistaFuente.php');
+        $datosRepresentacionVisualPorIndicador = ['fkidindicador' => $fkidindicador, 'fkidrepresenvisual' => $fkidrepresenvisual];
+        $objRepresentacionVisualPorIndicador = new Entidad($datosRepresentacionVisualPorIndicador);
+        $objControlRepresentacionVisualPorIndicador = new ControlEntidad('represenvisualporindicador');
+        $objControlRepresentacionVisualPorIndicador->guardar($objRepresentacionVisualPorIndicador);
+        header('Location: vistaRepresentacionVisualPorIndicador.php');
         break;
     case 'Borrar':
-        $datosFuente=['id' => $id];
-        $objFuente = new Entidad($datosFuente);
-        $objControlFuente= new ControlEntidad('unidadmedicion');
-        $objControlFuente->borrar('id', $id);
-		header('Location: vistaFuente.php');
-        break;
-
-    default:
-        // Lógica por defecto, si es necesaria
+        $datosRepresentacionVisualPorIndicador = ['fkidindicador' => $fkidindicador, 'fkidrepresenvisual' => $fkidrepresenvisual];
+        $objRepresentacionVisualPorIndicador = new Entidad($datosRepresentacionVisualPorIndicador);
+        $objControlRepresentacionVisualPorIndicador->borrar('fkidindicador', $fkidindicador, 'fkidrepresenvisual', $fkidrepresenvisual);
+        header('Location: vistaRepresentacionVisualPorIndicador.php');
         break;
 }
+
 ?>
 <?php include "../vista/base_ini_head.html" ?>
 <?php include "../vista/base_ini_body.html" ?>
@@ -88,7 +62,7 @@ switch ($boton) {
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
-						<h2 class="miEstilo">Gestión <b>Fuentes</b></h2>
+						<h2 class="miEstilo">Gestión <b>RepresentacionVisualPorIndicador</b></h2>
 					</div>
 					<div class="col-sm-6">
 						<a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE84E;</i> <span>Gestión F</span></a>
@@ -104,14 +78,14 @@ switch ($boton) {
 								<label for="selectAll"></label>
 							</span>
 						</th>
-						<th>Id</th>
-						<th>Nombre</th>
+						<th>Indicador</th>
+						<th>RepresenVisual</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php
-					for($i = 0; $i < count($arregloFuente); $i++){
+					for($i = 0; $i < count($arreglo); $i++){
 					?>
 						<tr>
 							<td>
@@ -120,8 +94,8 @@ switch ($boton) {
 									<label for="checkbox1"></label>
 								</span>
 							</td>
-							<td><?php echo $arregloFuente[$i]->__get('id');?></td>
-							<td><?php echo $arregloFuente[$i]->__get('nombre');?></td>
+							<td><?php echo $arreglo[$i]->__get('fkidindicador');?></td>
+							<td><?php echo $arreglo[$i]->__get('fkidrepresenvisual');?></td>
 							<td>
 								<a href="#editar" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE254;</i></a>
 								<a href="#borrar" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE872;</i></a>
@@ -151,9 +125,9 @@ switch ($boton) {
 <div id="crudModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="vistaFuente.php" method="post">
+			<form action="vistaRepresenTacionVisualPorIndicador.php" method="post">
 				<div class="modal-header">						
-					<h4 class="modal-title">Fuente</h4>
+					<h4 class="modal-title">RepresenVisualPorIndicador</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -162,19 +136,19 @@ switch ($boton) {
 						<!-- Nav tabs -->
 						<ul class="nav nav-tabs" role="tablist">
 							<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Fuentes</a>
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de RepresenVisualPorIndicador</a>
 							</li>
 						</ul>
 						<!-- Tab panes -->
 						<div class="tab-content">
 							<div id="home" class="container tab-pane active"><br>
 							<div class="form-group">
-								<label>Id</label>
-									<input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
+								<label>Indicador</label>
+									<input type="text" id="txtIndicador" name="txtIndicador" class="form-control" value="<?php echo $fkidindicador ?>">
 								</div>
 								<div class="form-group">
-									<label>Nombre </label>
-									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
+									<label>RepresenVisual </label>
+									<input type="text" id="txtRepresenVisual" name="txtRepresenVisual" class="form-control" value="<?php echo $fkidrepresenvisual ?>">
 								</div>
 								<div class="form-group">
 									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
@@ -200,7 +174,7 @@ switch ($boton) {
 	<div class="modal-dialog">
 		<div class="modal-content">
 				<div class="modal-header">						
-					<h4 class="modal-title">Fuente</h4>
+					<h4 class="modal-title">RepresenVisualPorIndicador</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -209,19 +183,19 @@ switch ($boton) {
 						<!-- Nav tabs -->
 						<ul class="nav nav-tabs" role="tablist">
 							<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Fuentes</a>
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de RepresenVisualPorIndicador</a>
 							</li>
 						</ul>
 						<!-- Tab panes -->
 						<div class="tab-content">
 							<div id="home" class="container tab-pane active"><br>
 							<div class="form-group">
-								<label>Id</label>
-									<input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
+								<label>Indicador</label>
+									<input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $fkidindicador ?>">
 								</div>
 								<div class="form-group">
-									<label>Nombre </label>
-									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
+									<label>RepresenVisualPorIndicador </label>
+									<input type="text" id="txtRepresenVisual" name="txtRepresenVisual" class="form-control" value="<?php echo $fkidrepresenvisual ?>">
 								</div>
 								<div class="form-group">
 									<input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">
@@ -244,9 +218,9 @@ switch ($boton) {
 <div id="borrar" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-		<form action="vistaFuente.php" method="post">
+		<form action="vistaRepresentacionVisualPorIndicador.php" method="post">
 				<div class="modal-header">						
-					<h4 class="modal-title">Tipo Indicador</h4>
+					<h4 class="modal-title">RepresenVisualPorIndicador</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -255,19 +229,19 @@ switch ($boton) {
 						<!-- Nav tabs -->
 						<ul class="nav nav-tabs" role="tablist">
 							<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Tipos Indicador</a>
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de RepresenVisualPorIndicador</a>
 							</li>
 						</ul>
 						<!-- Tab panes -->
 						<div class="tab-content">
 							<div id="home" class="container tab-pane active"><br>
 							<div class="form-group">
-								<label>Id</label>
-									<input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
+								<label>Indicador</label>
+									<input type="text" id="txtRepresenVisual" name="txtRepresenVisual" class="form-control" value="<?php echo $fkidindicador ?>">
 								</div>
 								<div class="form-group">
-									<label>Nombre</label>
-									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
+									<label>RepresenVisual</label>
+									<input type="text" id="txtRepresenVisual" name="txtRepresenVisual" class="form-control" value="<?php echo $fkidrepresenvisual ?>">
 								</div>
 								<div class="form-group">
 									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
@@ -293,3 +267,4 @@ switch ($boton) {
 <?php
   ob_end_flush();
 ?>
+
