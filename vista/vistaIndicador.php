@@ -43,7 +43,7 @@ switch($boton){
             'fkidliteral' => $fkidliteral, 'fkidnumeral' => $fkidnumeral, 'fkidparagrafo' => $fkidparagrafo];
         $obj = new Entidad($datos);
         $objControlIndicador = new ControlEntidad('indicador');
-        $objControlResultadoIndicador->guardar($obj);
+        $objControlIndicador->guardar($obj);
         header('Location: vistaIndicador.php');
         break;
 
@@ -201,7 +201,7 @@ foreach ($arregloSentido as $se) {
 <div id="crudModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="vistaFuente.php" method="post">
+			<form action="vistaIndicador.php" method="post">
 				<div class="modal-header">						
 					<h4 class="modal-title">Indicador</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -225,6 +225,54 @@ foreach ($arregloSentido as $se) {
 								<div class="form-group">
 									<label>Nombre </label>
 									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
+								</div>
+                                <div class="form-group">
+									<label>Objetivo </label>
+									<input type="text" id="txtObjetivo" name="txtObjetivo" class="form-control" value="<?php echo $objetivo ?>">
+								</div>
+                                <div class="form-group">
+									<label>Alcance </label>
+									<input type="text" id="txtAlcance" name="txtAlcance" class="form-control" value="<?php echo $alcance ?>">
+								</div>
+                                <div class="form-group">
+									<label>Formula </label>
+									<input type="text" id="txtFormula" name="txtFormula" class="form-control" value="<?php echo $formula ?>">
+								</div>
+                                <div class="form-group">
+									<label>TipoIndicador </label>
+									<input type="text" id="txtTipo" name="txtTipo" class="form-control" value="<?php echo $fkidtipoindicador ?>">
+								</div>
+                                <div class="form-group">
+									<label>UnidadMedicion </label>
+									<input type="text" id="txtUnidad" name="txtUnidad" class="form-control" value="<?php echo $fkidunidadmedicion ?>">
+								</div>
+                                <div class="form-group">
+									<label>Meta </label>
+									<input type="text" id="txtMeta" name="txtMeta" class="form-control" value="<?php echo $meta ?>">
+								</div>
+                                <div class="form-group">
+									<label>Sentido </label>
+									<input type="text" id="txtSentido" name="txtSentido" class="form-control" value="<?php echo $fkidsentido ?>">
+								</div>
+                                <div class="form-group">
+									<label>Frecuencia </label>
+									<input type="text" id="txtFrecuencia" name="txtFrecuencia" class="form-control" value="<?php echo $fkidfrecuencia ?>">
+								</div>
+                                <div class="form-group">
+									<label>Articulo </label>
+									<input type="text" id="txtArticulo" name="txtArticulo" class="form-control" value="<?php echo $fkidarticulo ?>">
+								</div>
+                                <div class="form-group">
+									<label>Literal </label>
+									<input type="text" id="txtLiteral" name="txtLiteral" class="form-control" value="<?php echo $fkidliteral ?>">
+								</div>
+                                <div class="form-group">
+									<label>Numeral </label>
+									<input type="text" id="txtNumeral" name="txtNumeral" class="form-control" value="<?php echo $fkidnumeral ?>">
+								</div>
+                                <div class="form-group">
+									<label>Parágrafo </label>
+									<input type="text" id="txtParagrafo" name="txtParagrafo" class="form-control" value="<?php echo $fkidparagrafo ?>">
 								</div>
 								<div class="form-group">
 									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
@@ -273,6 +321,34 @@ foreach ($arregloSentido as $se) {
 									<label>Nombre </label>
 									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
 								</div>
+                                <div class="form-group">
+									<label>Objetivo </label>
+									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $objetivo ?>">
+								</div>
+                                <div class="form-group">
+									<label>Alcance </label>
+									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $alcance ?>">
+								</div>
+                                <div class="form-group">
+									<label>Formula </label>
+									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $formula ?>">
+								</div>
+                                <div class="form-group">
+									<label>TipoIndicador </label>
+									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $fkidtipoindicador ?>">
+								</div>
+                                <div class="form-group">
+									<label>UnidadMedicion </label>
+									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $fkidunidadmedicion ?>">
+								</div>
+                                <div class="form-group">
+									<label>Meta </label>
+									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $meta ?>">
+								</div>
+                                <div class="form-group">
+									<label>Sentido </label>
+									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $fkidsentido ?>">
+								</div>
 								<div class="form-group">
 									<input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">
 								</div>
@@ -294,7 +370,7 @@ foreach ($arregloSentido as $se) {
 <div id="borrar" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-		<form action="vistaFuente.php" method="post">
+		<form action="vistaIndicador.php" method="post">
 				<div class="modal-header">						
 					<h4 class="modal-title">Indicador</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
