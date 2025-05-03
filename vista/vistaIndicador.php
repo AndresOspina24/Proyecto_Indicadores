@@ -15,9 +15,9 @@ foreach($_SESSION['listaRolesDelUsuario'] as $rol){
 if(!$permisoParaEntrar) header('Location: ../vista/menu.php');
 
 // Listar entidades relacionadas
+$objControlIndicador = new ControlEntidad('indicador');
+$arreglo = $objControlIndicador->listar();
 
-
-// Procesamiento CRUD
 $boton = $_POST['bt'] ?? '';
 $id = $_POST['txtId'] ?? '';
 $nombre = $_POST['txtNombre'] ?? '';
@@ -25,58 +25,99 @@ $objetivo = $_POST['txtObjetivo'] ?? '';
 $alcance = $_POST['txtAlcance'] ?? '';
 $formula = $_POST['txtFormula'] ?? '';
 $meta = $_POST['txtMeta'] ?? '';
-$tipo = $_POST['txtTipo'] ?? '';
-$unidad = $_POST['txtUnidad'] ?? '';
-$sentido = $_POST['txtSentido'] ?? '';
-$frecuencia = $_POST['txtFrecuencia'] ?? '';
-$articulo = $_POST['txtArticulo'] ?? '';
-$literal = $_POST['txtLiteral'] ?? '';
-$numeral = $_POST['txtNumeral'] ?? '';
-$paragrafo = $_POST['txtParagrafo'] ?? '';
+$fkidtipoindicador = $_POST['txtTipo'] ?? '';
+$fkidunidadmedicion = $_POST['txtUnidad'] ?? '';
+$fkidsentido = $_POST['txtSentido'] ?? '';
+$fkidfrecuencia = $_POST['txtFrecuencia'] ?? '';
+$fkidarticulo = $_POST['txtArticulo'] ?? '';
+$fkidliteral = $_POST['txtLiteral'] ?? '';
+$fkidnumeral = $_POST['txtNumeral'] ?? '';
+$fkidparagrafo = $_POST['txtParagrafo'] ?? '';
 
-$control = new ControlEntidad('indicador');
-$arregloIndicadoresConsulta = [];
-$objcontrolIndicador = new ControlEntidad('indicador');
-$arregloIndicadores = $objcontrolIndicador->listar();
-foreach ($arregloIndicadores as $ind) {
-    $arregloIndicadores[$ind->__get('id')] = $ind->__get('nombre');
-}
 
 switch($boton){
     case 'Guardar':
-        $datos = compact('id', 'nombre', 'objetivo', 'alcance', 'formula', 'meta',
-            'fkidtipoindicador', 'unidad', 'sentido', 'frecuencia', 'articulo', 'literal', 'numeral', 'paragrafo');
-        $control->guardar(new Entidad($datos));
+        $datos = ['id'=>$id, 'nombre' => $nombre, 'objetivo' => $objetivo, 'alcance' => $alcance, 'formula' => $formula,
+            'fkidtipoindicador' => $fkidtipoindicador, 'fkidunidadmedicion' =>$fkidunidadmedicion, 'meta' =>$meta, 
+            'fkidsentido' => $fkidsentido, 'fkidfrecuencia' => $fkidfrecuencia, 'fkidarticulo' => $fkidarticulo, 
+            'fkidliteral' => $fkidliteral, 'fkidnumeral' => $fkidnumeral, 'fkidparagrafo' => $fkidparagrafo];
+        $obj = new Entidad($datos);
+        $objControlIndicador = new ControlEntidad('indicador');
+        $objControlResultadoIndicador->guardar($obj);
+        header('Location: vistaIndicador.php');
         break;
+
+        case 'Consultar':
+            $datos=['id' => $id];
+            $obj = new Entidad($datos); 
+            $objControIndicador = new ControlEntidad('indicador');
+            $obj = $objControlIndicador->buscarPorId('id', $id);
+            if ($obj !== null) {
+                $nombre = $obj->__get('nombre');
+            } else {
+                // Manejar el caso en que $objUsuario es nulo
+                echo "El usuario no se encontró.";
+            }
+            break;
     case 'Modificar':
-        $datos = compact('id', 'nombre', 'objetivo', 'alcance', 'formula', 'meta',
-            'fkidtipoindicador', 'unidad', 'sentido', 'frecuencia', 'articulo', 'literal', 'numeral', 'paragrafo');
-        $control->modificar(new Entidad($datos), 'id', $id);
+		// Se debería llamar a un procedimiento almacenado con control de transacciones
+		//para modificar en las dos tablas
+		//1. modifica en tabla principal    
+        $datosTipoActor = ['id' => $id, 'nombre' => $nombre];
+        $objTipoActor=new Entidad($datosTipoActor);
+        $objControlTipoActor = new ControlEntidad('tipoactor');
+        $objControlTipoActor->modificar('id', $id, $objTipoActor);
+		header('Location: vistaIndicador.php');
         break;
-    case 'Borrar':
-        $control->borrar('id', $id);
-        break;
-    case 'Consultar':
-        $obj = $control->consultar('id', $id);
-        if ($obj) {
-            $nombre = $obj->__get('nombre');
-            $objetivo = $obj->__get('objetivo');
-            $alcance = $obj->__get('alcance');
-            $formula = $obj->__get('formula');
-            $meta = $obj->__get('meta');
-            $tipo = $obj->__get('idtipoindicador');
-            $unidad = $obj->__get('idunidadmedicion');
-            $sentido = $obj->__get('idsentido');
-            $frecuencia = $obj->__get('idfrecuencia');
-            $articulo = $obj->__get('idarticulo');
-            $literal = $obj->__get('idliteral');
-            $numeral = $obj->__get('idnumeral');
-            $paragrafo = $obj->__get('idparagrafo');
-        }
-        break;
+        case 'Modificar':
+            // Se debería llamar a un procedimiento almacenado con control de transacciones
+            //para modificar en las dos tablas
+            //1. modifica en tabla principal    
+            $datos = ['id'=>$id, 'nombre' => $nombre, 'objetivo' => $objetivo, 'alcance' => $alcance, 'formula' => $formula,
+            'fkidtipoindicador' => $fkidtipoindicador, 'fkidunidadmedicion' =>$fkidunidadmedicion, 'meta' =>$meta, 
+            'fkidsentido' => $fkidsentido, 'fkidfrecuencia' => $fkidfrecuencia, 'fkidarticulo' => $fkidarticulo, 
+            'fkidliteral' => $fkidliteral, 'fkidnumeral' => $fkidnumeral, 'fkidparagrafo' => $fkidparagrafo];
+            $obj=new Entidad($datos);
+            $objControl = new ControlEntidad('indicador');
+            $objControl->modificar('id', $id, $obj);
+            header('Location: vistaIndicador.php');
+            break;
+            case 'Borrar':
+                $datos = ['id'=>$id, 'nombre' => $nombre, 'objetivo' => $objetivo, 'alcance' => $alcance, 'formula' => $formula,
+            'fkidtipoindicador' => $fkidtipoindicador, 'fkidunidadmedicion' =>$fkidunidadmedicion, 'meta' =>$meta, 
+            'fkidsentido' => $fkidsentido, 'fkidfrecuencia' => $fkidfrecuencia, 'fkidarticulo' => $fkidarticulo, 
+            'fkidliteral' => $fkidliteral, 'fkidnumeral' => $fkidnumeral, 'fkidparagrafo' => $fkidparagrafo];
+                $obj = new Entidad($datos);
+                $objControlResultadoIndicador->borrar('id', $id, 'nombre' , $nombre, 'objetivo' , $objetivo, 'alcance' , $alcance, 'formula' , $formula,
+            'fkidtipoindicador' , $fkidtipoindicador, 'fkidunidadmedicion', $fkidunidadmedicion, 'meta' , $meta, 
+            'fkidsentido' , $fkidsentido, 'fkidfrecuencia',  $fkidfrecuencia, 'fkidarticulo', $fkidarticulo, 
+            'fkidliteral' , $fkidliteral, 'fkidnumeral', $fkidnumeral, 'fkidparagrafo', $fkidparagrafo);
+                header('Location: vistaIndicador.php');
+                break;
 }
 
-$lista = $control->listar();
+$arregloTipoIndicadoresConsulta = [];
+$objcontrolTipoIndicador = new ControlEntidad('tipoindicador');
+$arregloTipoIndicadores = $objcontrolTipoIndicador->listar();
+foreach ($arregloTipoIndicadores as $td) {
+    $arregloTipoIndicadores[$td->__get('id')] = $td->__get('nombre');
+}
+
+
+$arregloUnidadesMedicionConsulta = [];
+$objcontrolUnidadesMedicion = new ControlEntidad('unidadmedicion');
+$arregloUnidadesMedicion = $objcontrolUnidadesMedicion->listar();
+foreach ($arregloUnidadesMedicion as $um) {
+    $arregloUnidadesMedicion[$um->__get('id')] = $um->__get('descripcion');
+}
+
+$arregloSentidoConsulta = [];
+$objcontrolSentido = new ControlEntidad('sentido');
+$arregloSentido = $objcontrolSentido->listar();
+foreach ($arregloSentido as $se) {
+    $arregloSentido[$se->__get('id')] = $se->__get('nombre');
+}
+
 ?>
 
 <?php include "../vista/base_ini_head.html" ?>
@@ -86,19 +127,33 @@ $lista = $control->listar();
     <div class="table-responsive">
         <div class="table-wrapper">
             <div class="table-title">
-                <h2>Gestión <b>Indicadores</b></h2>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2 class="miEstilo">Gestión <b>Indicador</b></h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="#crudModal" class="btn btn-primary" data-toggle="modal">
+                            <i class="material-icons">&#xE84E;</i> <span>Gestión I</span>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <form method="post">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="custom-checkbox">
+                                <input type="checkbox" id="selectAll">
+                                <label for="selectAll"></label>
+                            </span>
+                        </th>
+                            <th>Id</th>
                             <th>Nombre</th>
                             <th>Objetivo</th>
                             <th>Alcance</th>
                             <th>Fórmula</th>
-                            <th>Meta</th>
-                            <th>Tipo</th>
-                            <th>Unidad</th>
+                            <th>TipoIndicador</th>
+                            <th>UnidadMedicion</th>
                             <th>Sentido</th>
                             <th>Frecuencia</th>
                             <th>Artículo</th>
@@ -106,38 +161,185 @@ $lista = $control->listar();
                             <th>Numeral</th>
                             <th>Parágrafo</th>
                             <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($lista as $item): ?>
-                            <tr>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($arreglo as $item): ?>
+                        <tr>
+                            <td>
+                                <span class="custom-checkbox">
+                                    <input type="checkbox" name="options[]" value="1">
+                                    <label></label>
+                                </span>
+                            </td>
+                                <td><?= $item->__get('id') ?></td>
                                 <td><?= $item->__get('nombre') ?></td>
                                 <td><?= $item->__get('objetivo') ?></td>
                                 <td><?= $item->__get('alcance') ?></td>
                                 <td><?= $item->__get('formula') ?></td>
+                                <td><?= $arregloTipoIndicadores[$item->__get('fkidtipoindicador')] ?? 'Desconocido' ?></td>
+                                <td><?= $arregloUnidadesMedicion[$item->__get('fkidunidadmedicion')] ?? 'Desconocido' ?></td>
+                                <td><?= $arregloSentido[$item->__get('fkidsentido')] ?? 'Desconocido' ?></td>
+                                <td><?= $item->__get('fkidfrecuencia') ?></td>
                                 <td><?= $item->__get('meta') ?></td>
-                                <td><?= $arregloTipo[$item->__get('idtipoindicador')] ?? 'Desconocido' ?></td>
-                                <td><?= $arregloUnidad[$item->__get('idunidadmedicion')] ?? 'Desconocido' ?></td>
-                                <td><?= $arregloSentido[$item->__get('idsentido')] ?? 'Desconocido' ?></td>
-                                <td><?= $arregloFrecuencia[$item->__get('idfrecuencia')] ?? 'Desconocido' ?></td>
-                                <td><?= $arregloArticulo[$item->__get('idarticulo')] ?? 'Desconocido' ?></td>
-                                <td><?= $arregloLiteral[$item->__get('idliteral')] ?? 'Desconocido' ?></td>
-                                <td><?= $arregloNumeral[$item->__get('idnumeral')] ?? 'Desconocido' ?></td>
-                                <td><?= $arregloParagrafo[$item->__get('idparagrafo')] ?? 'Desconocido' ?></td>
+                                <td><?= $item->__get('fkidarticulo')?></td>
+                                <td><?= $item->__get('fkidliteral')?></td>
+                                <td><?= $item->__get('fkidnumeral') ?></td>
+                                <td><?= $item->__get('fkidparagrafo') ?></td>
                                 <td>
-                                    <button name="bt" value="Consultar" class="btn btn-info btn-sm">Consultar</button>
-                                    <button name="bt" value="Modificar" class="btn btn-warning btn-sm">Modificar</button>
-                                    <button name="bt" value="Borrar" class="btn btn-danger btn-sm">Borrar</button>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <!-- Aquí puedes agregar el formulario modal de edición si lo necesitas -->
-            </form>
+                                <a href="#editar" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE254;</i></a>
+                                <a href="#borrar" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE872;</i></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
-    </div>
+    </div>        
+</div>
+
+<div id="crudModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form action="vistaFuente.php" method="post">
+				<div class="modal-header">						
+					<h4 class="modal-title">Indicador</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					
+						<div class="container">
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs" role="tablist">
+							<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Indicador</a>
+							</li>
+						</ul>
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<div id="home" class="container tab-pane active"><br>
+							<div class="form-group">
+								<label>Id</label>
+									<input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
+								</div>
+								<div class="form-group">
+									<label>Nombre </label>
+									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
+								</div>
+								<div class="form-group">
+									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
+									<input type="submit" id="btnConsultar" name="bt" class="btn btn-success" value="Consultar">
+									<input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">
+									<input type="submit" id="btnBorrar" name="bt" class="btn btn-warning" value="Borrar">
+								</div>
+							</div>
+							<div id="menu1" class="container tab-pane fade"><br>
+
+						</div>
+						</div>						
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="editar" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+				<div class="modal-header">						
+					<h4 class="modal-title">Indicador</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					
+						<div class="container">
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs" role="tablist">
+							<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Indicador</a>
+							</li>
+						</ul>
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<div id="home" class="container tab-pane active"><br>
+							<div class="form-group">
+								<label>Id</label>
+									<input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
+								</div>
+								<div class="form-group">
+									<label>Nombre </label>
+									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
+								</div>
+								<div class="form-group">
+									<input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">
+								</div>
+							</div>
+							<div id="menu2" class="container tab-pane fade"><br>
+
+						</div>
+						</div>						
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<div id="borrar" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<form action="vistaFuente.php" method="post">
+				<div class="modal-header">						
+					<h4 class="modal-title">Indicador</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					
+						<div class="container">
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs" role="tablist">
+							<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#home">Datos de Indicador</a>
+							</li>
+						</ul>
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<div id="home" class="container tab-pane active"><br>
+							<div class="form-group">
+								<label>Id</label>
+									<input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
+								</div>
+								<div class="form-group">
+									<label>Nombre</label>
+									<input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
+								</div>
+								<div class="form-group">
+									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
+									<input type="submit" id="btnConsultar" name="bt" class="btn btn-success" value="Consultar">
+									<input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">
+									<input type="submit" id="btnBorrar" name="bt" class="btn btn-warning" value="Borrar">
+								</div>
+							</div>
+							<div id="menu1" class="container tab-pane fade"><br>
+
+						</div>
+						</div>						
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 
 <?php include "../vista/basePie.html" ?>
-<?php ob_end_flush(); ?>
+<?php
+  ob_end_flush();
+?>

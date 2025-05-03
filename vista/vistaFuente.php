@@ -87,7 +87,7 @@ switch ($boton) {
 		<div class="table-wrapper">
 			<div class="table-title">
 				<div class="row">
-					<div class="col-sm-6">
+					<div class="col-sm-8">
 						<h2 class="miEstilo">Gestión <b>Fuentes</b></h2>
 					</div>
 					<div class="col-sm-6">
