@@ -134,11 +134,27 @@ foreach ($arregloRepresenVisuales as $vis) {
 							<div id="home" class="container tab-pane active"><br>
 							<div class="form-group">
 								<label>Indicador</label>
-									<input type="text" id="txtIndicador" name="txtIndicador" class="form-control" value="<?php echo $fkidindicador ?>">
+								<Select id="txtIndicador" name="txtIndicador" class="form-control">	
+									<option value="" selected disabled>Seleccionar</option>								
+									<?php $arregloIndicadores = $objcontrolIndicador->listar(); ?>
+									<?php foreach ($arregloIndicadores as $ind): ?>
+									<option value= <?php echo $ind->__get('id') ?? 'Desconocido'?>>
+									<?= $ind->__get('nombre') ?? 'Sin nombre' ?>     
+									</option>										
+									<?php endforeach; ?> 	
+									</select>
 								</div>
 								<div class="form-group">
 									<label>RepresenVisual </label>
-									<input type="text" id="txtRepresenVisual" name="txtRepresenVisual" class="form-control" value="<?php echo $fkidrepresenvisual ?>">
+									<select id="txtRepresenVisual" name="txtRepresenVisual" class="form-control" >
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloRepresenVisuales = $objcontrolRepresenVisual->listar(); ?>
+									<?php foreach ($arregloRepresenVisuales as $re): ?>
+									<option value= <?php echo $re->__get('id') ?? 'Desconocido'?>>
+									<?= $re->__get('nombre') ?? 'Sin nombre' ?>     
+									</option>										
+									<?php endforeach; ?> 
+									</select>
 								</div>
 								<div class="form-group">
 									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">

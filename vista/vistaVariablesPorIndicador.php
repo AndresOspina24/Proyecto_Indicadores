@@ -19,6 +19,7 @@ $objControlVariablesPorIndicador = new ControlEntidad('variablesporindicador');
 $arreglo = $objControlVariablesPorIndicador->listar();
 
 $boton = $_POST['bt'] ?? '';
+
 $fkidvariable = $_POST['txtfkidvariable'] ?? '';
 $fkidindicador = $_POST['txtfkidindicador'] ?? '';
 $fkemailusuario = $_POST['txtfkemailusuario'] ?? '';
@@ -53,6 +54,13 @@ $objcontrolIndicador = new ControlEntidad('indicador');
 $arregloIndicadores = $objcontrolIndicador->listar();
 foreach ($arregloIndicadores as $vis) {
     $arregloIndicadores[$vis->__get('id')] = $vis->__get('nombre');
+}
+
+$arregloUsersConsulta = [];
+$objcontrolUser = new ControlEntidad('usuario');
+$arregloUser = $objcontrolUser->listar();
+foreach ($arregloUser as $u) {
+    $arregloUser[$u->__get('email')] = $u->__get('email');
 }
 ?>
 
@@ -100,7 +108,7 @@ foreach ($arregloIndicadores as $vis) {
                             </td>
                             <td><?= $arregloVariables[$item->__get('fkidvariable')] ?? 'Desconocido' ?></td>
                             <td><?= $arregloIndicadores[$item->__get('fkidindicador')] ?? 'Desconocido' ?></td>
-                            <td><?= $item->__get('fkemailusuario') ?></td>
+                            <td><?= $arregloUser[$item->__get('fkemailusuario')] ?? 'Desconocido' ?></td>
                             <td>
                                 <a href="#editar" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE254;</i></a>
                                 <a href="#borrar" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE872;</i></a>
@@ -139,15 +147,39 @@ foreach ($arregloIndicadores as $vis) {
 							<div id="home" class="container tab-pane active"><br>
 							<div class="form-group">
 								<label>Variable</label>
-									<input type="text" id="txtfkidvariable" name="txtfkidvariable" class="form-control" value="<?php echo $fkidvariable ?>">
+									<Select id="txtfkidvariable" name="txtfkidvariable" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloVariables = $objcontrolVariable->listar(); ?>
+									<?php foreach ($arregloVariables as $vis): ?>
+									<option value= <?php echo $vis->__get('id') ?? 'Desconocido'?>>
+									<?= $vis->__get('nombre') ?? 'Sin nombre' ?>       
+									</option>										
+									<?php endforeach; ?> 
+									</Select>
 								</div>
 								<div class="form-group">
 									<label>Indicador </label>
-									<input type="text" id="txtfkidindicador" name="txtfkidindicador" class="form-control" value="<?php echo $fkidindicador ?>">
+									<Select id="txtIndicador" name="txtIndicador" class="form-control">	
+									<option value="" selected disabled>Seleccionar</option>								
+									<?php $arregloIndicadores = $objcontrolIndicador->listar(); ?>
+									<?php foreach ($arregloIndicadores as $ind): ?>
+									<option value= <?php echo $ind->__get('id') ?? 'Desconocido'?>>
+									<?= $ind->__get('nombre') ?? 'Sin nombre' ?>     
+									</option>										
+									<?php endforeach; ?> 	
+									</select>
 								</div>
                                 <div class="form-group">
 									<label>Usuario </label>
-									<input type="text" id="txtfkemailusuario" name="txtfkemailusuario" class="form-control" value="<?php echo $fkemailusuario ?>">
+									<Select id="txtfkemailusuario" name="txtfkemailusuario" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloUser = $objcontrolUser->listar(); ?>
+									<?php foreach ($arregloUser as $u): ?>
+									<option value= <?php echo $u->__get('email') ?? 'Desconocido'?>>
+									<?= $u->__get('email') ?? 'Sin nombre' ?>       
+									</option>										
+									<?php endforeach; ?> 
+									</Select>
 								</div>
 								<div class="form-group">
 									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">

@@ -81,6 +81,14 @@ switch ($boton) {
         // Lógica por defecto, si es necesaria
         break;
 }
+
+$arregloUsersConsulta = [];
+$objcontrolUser = new ControlEntidad('usuario');
+$arregloUser = $objcontrolUser->listar();
+foreach ($arregloUser as $u) {
+    $arregloUser[$u->__get('email')] = $u->__get('email');
+}
+
 ?>
 <?php include "../vista/base_ini_head.html" ?>
 <?php include "../vista/base_ini_body.html" ?>
@@ -115,7 +123,7 @@ switch ($boton) {
 				</thead>
 				<tbody>
 					<?php
-					for($i = 0; $i < count($arregloVariable); $i++){
+					foreach($arregloVariable as $i):
 					?>
 						<tr>
 							<td>
@@ -124,18 +132,16 @@ switch ($boton) {
 									<label for="checkbox1"></label>
 								</span>
 							</td>
-							<td><?php echo $arregloVariable[$i]->__get('id');?></td>
-							<td><?php echo $arregloVariable[$i]->__get('nombre');?></td>
-                            <td><?php echo $arregloVariable[$i]->__get('fechacreacion');?></td>
-                            <td><?php echo $arregloVariable[$i]->__get('fkemailusuario');?></td>
+							<td><?php echo $i->__get('id');?></td>
+							<td><?php echo $i->__get('nombre');?></td>
+                            <td><?php echo $i->__get('fechacreacion');?></td>
+                            <td><?php echo $arregloUser[$i->__get('fkemailusuario')] ?? 'Desconocido'?></td>
 							<td>
 								<a href="#editar" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE254;</i></a>
 								<a href="#borrar" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE872;</i></a>
 							</td>
 						</tr>
-					<?php
-					}
-					?>
+					<?php endforeach ?>
 				</tbody>
 			</table>
 			<div class="clearfix">
@@ -188,7 +194,16 @@ switch ($boton) {
 								</div>
                                 <div class="form-group">
 									<label>fkemailusuario</label>
-									<input type="text" id="txtfkemailusuario" name="txtfkemailusuario" class="form-control" value="<?php echo $fkemailusuario ?>">
+									<Select id="txtfkemailusuario" name="txtfkemailusuario" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloUser = $objcontrolUser->listar(); ?>
+									<?php foreach ($arregloUser as $u): ?>
+									<option value= <?php echo $u->__get('email') ?? 'Desconocido'?>>
+									<?= $u->__get('email') ?? 'Sin nombre' ?>       
+									</option>										
+									<?php endforeach; ?> 
+									
+									</Select>
 								</div>
 								<div class="form-group">
 									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">

@@ -79,6 +79,15 @@ switch ($boton) {
         // Lógica por defecto, si es necesaria
         break;
 }
+
+$arregloTipoActoresConsulta = [];
+$objcontrolTipoActores = new ControlEntidad('tipoactor');
+$arregloTipoActores = $objcontrolTipoActores->listar();
+foreach ($arregloTipoActores as $tac) {
+    $arregloTipoActores[$tac->__get('id')] = $tac->__get('nombre');
+}
+
+
 ?>
 <?php include "../vista/base_ini_head.html" ?>
 <?php include "../vista/base_ini_body.html" ?>
@@ -112,7 +121,7 @@ switch ($boton) {
 				</thead>
 				<tbody>
 					<?php
-					for($i = 0; $i < count($arregloActor); $i++){
+					foreach($arregloActor as $i):
 					?>
 						<tr>
 							<td>
@@ -121,17 +130,15 @@ switch ($boton) {
 									<label for="checkbox1"></label>
 								</span>
 							</td>
-							<td><?php echo $arregloActor[$i]->__get('id');?></td>
-							<td><?php echo $arregloActor[$i]->__get('nombre');?></td>
-                            <td><?php echo $arregloActor[$i]->__get('fkidtipoactor');?></td>
+							<td><?php echo $i->__get('id');?></td>
+							<td><?php echo $i->__get('nombre');?></td>
+                            <td><?php echo $arregloTipoActores[$i->__get('fkidtipoactor')] ?? 'Desconocido' ?></td>
 							<td>
 								<a href="#editar" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE254;</i></a>
 								<a href="#borrar" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE872;</i></a>
 							</td>
 						</tr>
-					<?php
-					}
-					?>
+						<?php endforeach; ?>
 				</tbody>
 			</table>
 			<div class="clearfix">
@@ -180,7 +187,15 @@ switch ($boton) {
 								</div>
                                 <div class="form-group">
 									<label>fkidtipoactor</label>
-									<input type="text" id="txtfkidtipoactor" name="txtfkidtipoactor" class="form-control" value="<?php echo $fkidtipoactor ?>">
+									<Select id="txtfkidtipoactor" name="txtfkidtipoactor" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloTipoActores = $objcontrolTipoActores->listar(); ?>
+									<?php foreach ($arregloTipoActores as $tac): ?>
+									<option value= <?php echo $tac->__get('id') ?? 'Desconocido'?>>
+									<?= $tac->__get('nombre') ?? 'Sin nombre' ?>     
+									</option>										
+									<?php endforeach; ?> 	
+									</Select>
 								</div>
 								<div class="form-group">
 									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">

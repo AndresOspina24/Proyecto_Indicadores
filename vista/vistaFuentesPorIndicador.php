@@ -137,11 +137,27 @@ foreach ($arregloIndicadores as $ind) {
 							<div id="home" class="container tab-pane active"><br>
 							<div class="form-group">
 								<label>Fuente</label>
-									<input type="text" id="txtidFuente" name="txtidFuente" class="form-control" value="<?php echo $fkidfuente ?>">
+									<Select id="txtidFuente" name="txtidFuente" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloFuentes = $objcontrolFuente->listar(); ?>
+									<?php foreach ($arregloFuentes as $fuen): ?>
+									<option value= <?php echo $fuen->__get('id') ?? 'Desconocido'?>>
+									<?= $fuen->__get('nombre') ?? 'Sin nombre' ?>     
+									</option>										
+									<?php endforeach; ?> 
+									</Select>
 								</div>
 								<div class="form-group">
 									<label>Indicador </label>
-									<input type="text" id="txtIndicador" name="txtIndicador" class="form-control" value="<?php echo $fkidindicador ?>">
+									<Select id="txtIndicador" name="txtIndicador" class="form-control">	
+									<option value="" selected disabled>Seleccionar</option>								
+									<?php $arregloIndicadores = $objcontrolIndicador->listar(); ?>
+									<?php foreach ($arregloIndicadores as $ind): ?>
+									<option value= <?php echo $ind->__get('id') ?? 'Desconocido'?>>
+									<?= $ind->__get('nombre') ?? 'Sin nombre' ?>     
+									</option>										
+									<?php endforeach; ?> 	
+									</select>	
 								</div>
 								<div class="form-group">
 									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
@@ -188,7 +204,8 @@ foreach ($arregloIndicadores as $ind) {
 								</div>
 								<div class="form-group">
                                 <label>Indicador</label>
-                                <input type="text" id="txtIndicador" name="txtIndicador" class="form-control" value="<?php echo $fkidindicador ?>">
+                                <select type="text" id="txtIndicador" name="txtIndicador" class="form-control" value="<?php echo $fkidindicador ?>">
+								</select>
 								</div>
 								<div class="form-group">
 									<input type="submit" id="btnModificar" name="bt" class="btn btn-warning" value="Modificar">

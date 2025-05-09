@@ -68,10 +68,10 @@ switch ($boton) {
 		header('Location: vistaFuente.php');
         break;
     case 'Borrar':
-        $datosFuente=['id' => $id];
+        $datosFuente=['id' => $id, 'nombre' => $nombre];
         $objFuente = new Entidad($datosFuente);
-        $objControlFuente= new ControlEntidad('unidadmedicion');
-        $objControlFuente->borrar('id', $id);
+        $objControlFuente= new ControlEntidad('fuente');
+        $objControlFuente->borrar('id', $id, 'nombre', $nombre);
 		header('Location: vistaFuente.php');
         break;
 
@@ -87,12 +87,14 @@ switch ($boton) {
 		<div class="table-wrapper">
 			<div class="table-title">
 				<div class="row">
-					<div class="col-sm-8">
+					<div class="col-sm-6">
 						<h2 class="miEstilo">Gestión <b>Fuentes</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE84E;</i> <span>Gestión F</span></a>
-					</div>
+                        <a href="#crudModal" class="btn btn-primary" data-toggle="modal">
+                            <i class="material-icons">&#xE84E;</i> <span>Gestión F</span>
+                        </a>
+                    </div>
 				</div>
 			</div>
 			<table class="table table-striped table-hover">

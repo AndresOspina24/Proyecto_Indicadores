@@ -88,7 +88,7 @@ switch($boton){
             'fkidsentido' => $fkidsentido, 'fkidfrecuencia' => $fkidfrecuencia, 'fkidarticulo' => $fkidarticulo, 
             'fkidliteral' => $fkidliteral, 'fkidnumeral' => $fkidnumeral, 'fkidparagrafo' => $fkidparagrafo];
                 $obj = new Entidad($datos);
-                $objControlResultadoIndicador->borrar('id', $id, 'nombre' , $nombre, 'objetivo' , $objetivo, 'alcance' , $alcance, 'formula' , $formula,
+                $objControlIndicador->borrar('id', $id, 'nombre' , $nombre, 'objetivo' , $objetivo, 'alcance' , $alcance, 'formula' , $formula,
             'fkidtipoindicador' , $fkidtipoindicador, 'fkidunidadmedicion', $fkidunidadmedicion, 'meta' , $meta, 
             'fkidsentido' , $fkidsentido, 'fkidfrecuencia',  $fkidfrecuencia, 'fkidarticulo', $fkidarticulo, 
             'fkidliteral' , $fkidliteral, 'fkidnumeral', $fkidnumeral, 'fkidparagrafo', $fkidparagrafo);
@@ -116,6 +116,41 @@ $objcontrolSentido = new ControlEntidad('sentido');
 $arregloSentido = $objcontrolSentido->listar();
 foreach ($arregloSentido as $se) {
     $arregloSentido[$se->__get('id')] = $se->__get('nombre');
+}
+$arregloFrecuenciasConsulta = [];
+$objcontrolFrecuencia = new ControlEntidad('frecuencia');
+$arregloFrecuencias = $objcontrolFrecuencia->listar();
+foreach ($arregloFrecuencias as $f) {
+    $arregloFrecuencias[$f->__get('id')] = $td->__get('nombre');
+}
+
+$arregloArticulosConsulta = [];
+$objcontrolArticulos = new ControlEntidad('articulo');
+$arregloArticulos = $objcontrolArticulos->listar();
+foreach ($arregloArticulos as $ar) {
+    $arregloArticulos[$ar->__get('id')] = $ar->__get('nombre');
+}
+
+$arregloLiteralConsulta = [];
+$objcontrolLiteral = new ControlEntidad('literal');
+$arregloLiteral = $objcontrolLiteral->listar();
+foreach ($arregloLiteral as $l) {
+    $arregloLiteral[$l->__get('id')] = $l->__get('descripcion');
+}
+
+
+$arregloNumeralConsulta = [];
+$objcontrolNumeral = new ControlEntidad('numeral');
+$arregloNumeral = $objcontrolNumeral->listar();
+foreach ($arregloNumeral as $nu) {
+    $arregloNumeral[$nu->__get('id')] = $nu->__get('descripcion');
+}
+
+$arregloParagrafoConsulta = [];
+$objcontrolParagrafo = new ControlEntidad('paragrafo');
+$arregloParagrafo = $objcontrolParagrafo->listar();
+foreach ($arregloParagrafo as $pr) {
+    $arregloParagrafo[$pr->__get('id')] = $pr->__get('descripcion');
 }
 
 ?>
@@ -156,6 +191,7 @@ foreach ($arregloSentido as $se) {
                             <th>UnidadMedicion</th>
                             <th>Sentido</th>
                             <th>Frecuencia</th>
+							<th>Meta</th>
                             <th>Artículo</th>
                             <th>Literal</th>
                             <th>Numeral</th>
@@ -180,18 +216,19 @@ foreach ($arregloSentido as $se) {
                                 <td><?= $arregloTipoIndicadores[$item->__get('fkidtipoindicador')] ?? 'Desconocido' ?></td>
                                 <td><?= $arregloUnidadesMedicion[$item->__get('fkidunidadmedicion')] ?? 'Desconocido' ?></td>
                                 <td><?= $arregloSentido[$item->__get('fkidsentido')] ?? 'Desconocido' ?></td>
-                                <td><?= $item->__get('fkidfrecuencia') ?></td>
+                                <td><?= $arregloFrecuencias[$item->__get('fkidfrecuencia')] ?? 'Desconocido'?></td>
                                 <td><?= $item->__get('meta') ?></td>
-                                <td><?= $item->__get('fkidarticulo')?></td>
-                                <td><?= $item->__get('fkidliteral')?></td>
-                                <td><?= $item->__get('fkidnumeral') ?></td>
-                                <td><?= $item->__get('fkidparagrafo') ?></td>
+                                <td><?= $arregloArticulos[$item->__get('fkidarticulo')] ?? 'Desconocido'?></td>
+                                <td><?= $arregloLiteral[$item->__get('fkidliteral')] ?? 'Desconocido'?></td>
+                                <td><?= $arregloNumeral[$item->__get('fkidnumeral')] ?? 'Desconocido' ?></td>
+                                <td><?= $arregloParagrafo[$item->__get('fkidparagrafo')] ?? 'Desconocido' ?></td>
                                 <td>
                                 <a href="#editar" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE254;</i></a>
                                 <a href="#borrar" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip">&#xE872;</i></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
+
                 </tbody>
             </table>
         </div>
@@ -240,11 +277,27 @@ foreach ($arregloSentido as $se) {
 								</div>
                                 <div class="form-group">
 									<label>TipoIndicador </label>
-									<input type="text" id="txtTipo" name="txtTipo" class="form-control" value="<?php echo $fkidtipoindicador ?>">
+									<Select id="txtTipo" name="txtTipo" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloTipoIndicadores = $objcontrolTipoIndicador->listar(); ?>
+									<?php foreach ($arregloTipoIndicadores as $td): ?>
+									<option value= <?php echo $td->__get('id') ?? 'Desconocido'?>> 
+									<?= $td->__get('nombre') ?? 'Sin nombre' ?>  
+									</option>										
+									<?php endforeach; ?> 
+									</select>
 								</div>
                                 <div class="form-group">
 									<label>UnidadMedicion </label>
-									<input type="text" id="txtUnidad" name="txtUnidad" class="form-control" value="<?php echo $fkidunidadmedicion ?>">
+									<Select id="txtUnidad" name="txtUnidad" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloUnidadesMedicion = $objcontrolUnidadesMedicion->listar(); ?>
+									<?php foreach ($arregloUnidadesMedicion as $um): ?>
+									<option value= <?php echo $um->__get('id') ?? 'Desconocido'?>> 
+									<?= $um->__get('descripcion') ?? 'Sin nombre' ?>  
+									</option>										
+									<?php endforeach; ?> 
+									</select>
 								</div>
                                 <div class="form-group">
 									<label>Meta </label>
@@ -252,27 +305,75 @@ foreach ($arregloSentido as $se) {
 								</div>
                                 <div class="form-group">
 									<label>Sentido </label>
-									<input type="text" id="txtSentido" name="txtSentido" class="form-control" value="<?php echo $fkidsentido ?>">
+									<select  id="txtSentido" name="txtSentido" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloSentido = $objcontrolSentido->listar(); ?>
+									<?php foreach ($arregloSentido as $s): ?>
+									<option value= <?php echo $s->__get('id') ?? 'Desconocido'?>> 
+									<?= $s->__get('nombre') ?? 'Sin nombre' ?>  
+									</option>										
+									<?php endforeach; ?> 
+									</select>
 								</div>
                                 <div class="form-group">
 									<label>Frecuencia </label>
-									<input type="text" id="txtFrecuencia" name="txtFrecuencia" class="form-control" value="<?php echo $fkidfrecuencia ?>">
+									<select  id="txtFrecuencia" name="txtFrecuencia" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloFrecuencias = $objcontrolFrecuencia->listar(); ?>
+									<?php foreach ($arregloFrecuencias as $f): ?>
+									<option value= <?php echo $f->__get('id') ?? 'Desconocido'?>> 
+									<?= $f->__get('nombre') ?? 'Sin nombre' ?>  
+									</option>										
+									<?php endforeach; ?> 
+									</select>
 								</div>
                                 <div class="form-group">
 									<label>Articulo </label>
-									<input type="text" id="txtArticulo" name="txtArticulo" class="form-control" value="<?php echo $fkidarticulo ?>">
+									<select id="txtArticulo" name="txtArticulo" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloArticulos = $objcontrolArticulos->listar(); ?>
+									<?php foreach ($arregloArticulos as $ar): ?>
+									<option value= <?php echo $ar->__get('id') ?? 'Desconocido'?>>
+									<?= $ar->__get('nombre') ?? 'Sin nombre' ?>     
+									</option>										
+									<?php endforeach; ?> 
+								</select>
 								</div>
                                 <div class="form-group">
 									<label>Literal </label>
-									<input type="text" id="txtLiteral" name="txtLiteral" class="form-control" value="<?php echo $fkidliteral ?>">
+									<select id="txtLiteral" name="txtLiteral" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloLiteral = $objcontrolLiteral->listar(); ?>
+									<?php foreach ($arregloLiteral as $L): ?>
+									<option value= <?php echo $L->__get('id') ?? 'Desconocido'?>>
+									<?= $L->__get('descripcion') ?? 'Sin nombre' ?>     
+									</option>										
+									<?php endforeach; ?> 
+								</select>
 								</div>
                                 <div class="form-group">
 									<label>Numeral </label>
-									<input type="text" id="txtNumeral" name="txtNumeral" class="form-control" value="<?php echo $fkidnumeral ?>">
+									<select id="txtNumeral" name="txtNumeral" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloNumeral = $objcontrolNumeral->listar(); ?>
+									<?php foreach ($arregloNumeral as $nu): ?>
+									<option value= <?php echo $nu->__get('id') ?? 'Desconocido'?>>
+									<?= $nu->__get('descripcion') ?? 'Sin nombre' ?>     
+									</option>										
+									<?php endforeach; ?> 
+								</select>
 								</div>
                                 <div class="form-group">
 									<label>Parágrafo </label>
-									<input type="text" id="txtParagrafo" name="txtParagrafo" class="form-control" value="<?php echo $fkidparagrafo ?>">
+									<select  id="txtParagrafo" name="txtParagrafo" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloParagrafo = $objcontrolParagrafo->listar(); ?>
+									<?php foreach ($arregloParagrafo as $pr): ?>
+									<option value= <?php echo $pr->__get('id') ?? 'Desconocido'?>>
+									<?= $pr->__get('descripcion') ?? 'Sin nombre' ?>     
+									</option>										
+									<?php endforeach; ?> 	
+								</select>
 								</div>
 								<div class="form-group">
 									<input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">

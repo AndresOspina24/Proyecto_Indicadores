@@ -140,11 +140,27 @@ foreach ($arregloIndicadores as $ind) {
 							<div id="home" class="container tab-pane active"><br>
 							<div class="form-group">
 								<label>Responsable</label>
-									<input type="text" id="txtidresponsable" name="txtidresponsable" class="form-control" value="<?php echo $fkidresponsable ?>">
+									<Select id="txtidresponsable" name="txtidresponsable" class="form-control">
+									<option value="" selected disabled>Seleccionar</option>	
+									<?php $arregloResponsable = $objcontrolResponsable->listar(); ?>
+									<?php foreach ($arregloResponsable as $res): ?>
+									<option value= <?php echo $res->__get('id') ?? 'Desconocido'?>>
+									<?= $res->__get('nombre') ?? 'Sin nombre' ?>     
+									</option>										
+									<?php endforeach; ?> 
+									</Select>
 								</div>
 								<div class="form-group">
 									<label>Indicador </label>
-									<input type="text" id="txtIndicador" name="txtIndicador" class="form-control" value="<?php echo $fkidindicador ?>">
+									<Select id="txtIndicador" name="txtIndicador" class="form-control">	
+									<option value="" selected disabled>Seleccionar</option>								
+									<?php $arregloIndicadores = $objcontrolIndicador->listar(); ?>
+									<?php foreach ($arregloIndicadores as $ind): ?>
+									<option value= <?php echo $ind->__get('id') ?? 'Desconocido'?>>
+									<?= $ind->__get('nombre') ?? 'Sin nombre' ?>     
+									</option>										
+									<?php endforeach; ?> 	
+									</select>
 								</div>
                                 <div class="form-group">
 									<label>Fecha Asignacion </label>
