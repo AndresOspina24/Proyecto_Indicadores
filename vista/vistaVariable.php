@@ -54,6 +54,8 @@ switch ($boton) {
 		$objVariable = $objControlVariable->buscarPorId('id', $id);
 		if ($objVariable !== null) {
 			$nombre = $objVariable->__get('nombre');
+			$fecha = $objVariable->__get('fechacreacion');
+			$fkemailusuario =$objVariable->__get('fkemailusuario');
 		} else {
 			// Manejar el caso en que $objUsuario es nulo
 			echo "El usuario no se encontró.";

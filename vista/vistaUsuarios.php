@@ -16,8 +16,7 @@ ob_start();
 	}
 	if(!$permisoParaEntrar)header('Location: ../vista/menu.php');
 
-?>
-<?php
+
 
 $arregloRolesConsulta=[];
 
