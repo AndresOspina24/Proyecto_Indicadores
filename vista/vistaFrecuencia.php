@@ -9,12 +9,31 @@ ob_start();
   	session_start();
   	if($_SESSION['email']==null)header('Location: ../index.php');
 
-	$permisoParaEntrar=false;
-	$listaRolesDelUsuario=$_SESSION['listaRolesDelUsuario'];
-	for($i=0;$i<count($listaRolesDelUsuario);$i++){
-		if($listaRolesDelUsuario[$i]->__get('nombre')=="admin" || $listaRolesDelUsuario[$i]->__get('nombre')=="Verificador")$permisoParaEntrar=true;
-	}
-	if(!$permisoParaEntrar)header('Location: ../vista/menu.php');
+$permisoParaEntrar = false;
+$esAdmin = false;
+$esVerificador = false;
+$esValidador = false;
+
+$listaRolesDelUsuario = $_SESSION['listaRolesDelUsuario'] ?? [];
+
+foreach ($listaRolesDelUsuario as $rol) {
+    $rolNombre = $rol->__get('nombre');
+    if ($rolNombre == "admin") {
+        $esAdmin = true;
+        $permisoParaEntrar = true;
+    }
+    if ($rolNombre == "Verificador") {
+        $esVerificador = true;
+        $permisoParaEntrar = true;
+    }
+    if ($rolNombre == "Validador") {
+        $esValidador = true;
+        $permisoParaEntrar = true;
+    }
+}
+
+if (!$permisoParaEntrar)
+    header('Location: ../vista/menu.php');
 
 ?>
 <?php
@@ -90,8 +109,11 @@ switch ($boton) {
 					<div class="col-sm-6">
 						<h2 class="miEstilo">Gestión <b>Frecuencia</b></h2>
 					</div>
-					<div class="col-sm-6">
-						<a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE84E;</i> <span>Gestión F</span></a>
+					<div class="col-sm-6"><?php if ($esAdmin): ?>
+                            <a href="#crudModal" class="btn btn-primary" data-toggle="modal">
+                                <i class="material-icons">&#xE84E;</i> <span>Gestión Fuente</span>
+                            </a>
+                        <?php endif; ?>
 					</div>
 				</div>
 			</div>

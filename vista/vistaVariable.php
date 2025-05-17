@@ -9,12 +9,31 @@ ob_start();
   	session_start();
   	if($_SESSION['email']==null)header('Location: ../index.php');
 
-	$permisoParaEntrar=false;
-	$listaRolesDelUsuario=$_SESSION['listaRolesDelUsuario'];
-	for($i=0;$i<count($listaRolesDelUsuario);$i++){
-		if($listaRolesDelUsuario[$i]->__get('nombre')=="admin" || $listaRolesDelUsuario[$i]->__get('nombre')=="Verificador")$permisoParaEntrar=true;
-	}
-	if(!$permisoParaEntrar)header('Location: ../vista/menu.php');
+$permisoParaEntrar = false;
+$esAdmin = false;
+$esVerificador = false;
+$esValidador = false;
+
+$listaRolesDelUsuario = $_SESSION['listaRolesDelUsuario'] ?? [];
+
+foreach ($listaRolesDelUsuario as $rol) {
+    $rolNombre = $rol->__get('nombre');
+    if ($rolNombre == "admin") {
+        $esAdmin = true;
+        $permisoParaEntrar = true;
+    }
+    if ($rolNombre == "Verificador") {
+        $esVerificador = true;
+        $permisoParaEntrar = true;
+    }
+    if ($rolNombre == "Validador") {
+        $esValidador = true;
+        $permisoParaEntrar = true;
+    }
+}
+
+if (!$permisoParaEntrar)
+    header('Location: ../vista/menu.php');
 
 ?>
 <?php
@@ -40,10 +59,10 @@ switch ($boton) {
     case 'Guardar':
 		// Se debería llamar a un procedimiento almacenado con control de transacciones
 		//para guardar en las dos tablas 
-		$datosVariable = ['id' => $id, 'nombre' => $nombre, 'fechacreacion' => $fecha];
+		$datosVariable = ['id' => $id, 'nombre' => $nombre, 'fechacreacion' => $fecha, 'fkemailusuario' => $fkemailusuario];
 		$objVariable= new Entidad($datosVariable);
 		$objControlVariable = new ControlEntidad('variable');
-		$objVariable->guardar($objVariable);
+		$objControlVariable->guardar($objVariable);
 		header('Location: vistaVariable.php');
 		break;
 
@@ -102,8 +121,11 @@ foreach ($arregloUser as $u) {
 					<div class="col-sm-6">
 						<h2 class="miEstilo">Gestión <b>Variable</b></h2>
 					</div>
-					<div class="col-sm-6">
-						<a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i class="material-icons">&#xE84E;</i> <span>Gestión Variable</span></a>
+					<div class="col-sm-6">  <?php if ($esAdmin): ?>
+                            <a href="#crudModal" class="btn btn-primary" data-toggle="modal">
+                                <i class="material-icons">&#xE84E;</i> <span>Gestión </span>
+                            </a>
+                        <?php endif; ?>
 					</div>
 				</div>
 			</div>
@@ -192,7 +214,7 @@ foreach ($arregloUser as $u) {
 								</div>
                                 <div class="form-group">
 									<label>Fecha</label>
-									<input type="text" id="txtFecha" name="txtFecha" class="form-control" value="<?php echo $fecha ?>">
+									<input type="date" id="txtFecha" name="txtFecha" class="form-control" value="<?php echo $fecha ?>">
 								</div>
                                 <div class="form-group">
 									<label>fkemailusuario</label>
