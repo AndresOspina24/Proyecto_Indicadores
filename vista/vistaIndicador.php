@@ -222,7 +222,7 @@ foreach ($arregloParagrafo as $pr) {
                                 <span class="custom-checkbox">
                                     <input type="checkbox" name="options[]" value="1">
                                     <label></label>
-                                </span>
+                                </span>	
                             </td>
                                 <td><?= $item->__get('id') ?></td>
                                 <td><?= $item->__get('nombre') ?></td>

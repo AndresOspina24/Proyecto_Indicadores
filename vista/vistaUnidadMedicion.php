@@ -63,7 +63,7 @@ switch ($boton) {
         $datosUnidadMedicion = ['id' => $id];
         $objUnidadMedicion = new Entidad($datosUnidadMedicion);
         $objControlUnidadMedicion = new ControlEntidad('unidadmedicion');
-        $objControlUnidadMedicion = $objControlUnidadMedicion->buscarPorId('id', $id);
+        $objUnidadMedicion = $objControlUnidadMedicion->buscarPorId('id', $id);
         if ($objUnidadMedicion !== null) {
             $descripcion = $objUnidadMedicion->__get('descripcion');
         } else {
@@ -112,7 +112,7 @@ switch ($boton) {
                         <h2 class="miEstilo">Gestión <b>Unidades Medición</b></h2>
                     </div>
                     <div class="col-sm-6">
-                        <?php if ($esAdmin): ?>
+                        <?php if ($esAdmin or $esValidador or $esVerificador): ?>
                             <a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i
                                     class="material-icons">&#xE84E;</i> <span>Gestión</span></a>
                         <?php endif; ?>
@@ -152,7 +152,7 @@ switch ($boton) {
                                             data-toggle="tooltip" title="Editar">&#xE254;</i></a>
                                 <?php endif; ?>
                                 <?php if ($esAdmin): ?>
-                                    <a href="#borrar" class="delete" data-toggle="modal" data-id="<?php echo $arregloUnidadMedicion[$i]->__get('id'); ?>"><i class="material-icons"
+                                    <a href="#borrar" class="delete" data-toggle="modal" data-id="<?php echo $arregloUnidadMedicion[$i]->__get('id'); ?>" data-descripcion="<?php echo $arregloUnidadMedicion[$i]->__get('descripcion'); ?>"><i class="material-icons"
                                             data-toggle="tooltip" title="Borrar">&#xE872;</i></a>
                                 <?php endif; ?>
                             </td>
@@ -178,6 +178,7 @@ switch ($boton) {
     </div>
 </div>
 
+<?php if ($esAdmin or $esValidador or $esVerificador): ?>
 <div id="crudModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -199,29 +200,19 @@ switch ($boton) {
                                 <div class="form-group">
                                     <label>Id</label>
                                     <input type="text" id="txtId" name="txtId" class="form-control"
-                                        value="<?php echo $id ?>" <?php if (!$esAdmin) echo "readonly"; ?>>
+                                        value="<?php echo $id ?>">
                                 </div>
                                 <div class="form-group">
                                     <label>Descripción </label>
                                     <input type="text" id="txtDescripcion" name="txtDescripcion" class="form-control"
                                         value="<?php echo $descripcion ?>">
                                 </div>
-                                <div class="form-group">
-                                    <?php if ($esAdmin): ?>
-                                        <input type="submit" id="btnGuardar" name="bt" class="btn btn-success"
-                                            value="Guardar">
-                                    <?php endif; ?>
-                                    <input type="submit" id="btnConsultar" name="bt" class="btn btn-success"
-                                        value="Consultar">
-                                    <?php if ($esAdmin || $esValidador): ?>
-                                        <input type="submit" id="btnModificar" name="bt" class="btn btn-warning"
-                                            value="Modificar">
-                                    <?php endif; ?>
-                                    <?php if ($esAdmin): ?>
-                                        <input type="submit" id="btnBorrar" name="bt" class="btn btn-warning"
-                                            value="Borrar">
-                                    <?php endif; ?>
-                                </div>
+                               <?php if ($esAdmin): ?>
+                                    <div class="form-group">
+                                        <input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
+                                      <?php endif; ?>  
+                                        <input type="submit" id="btnConsultar" name="bt" class="btn btn-success" value="Consultar">
+                                    </div>
                             </div>
                             <div id="menu1" class="container tab-pane fade"><br>
 
@@ -236,7 +227,10 @@ switch ($boton) {
         </div>
     </div>
 </div>
+<?php endif; ?>
 
+
+<?php if ($esAdmin or $esValidador): ?>
 <div id="editar" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -286,7 +280,10 @@ switch ($boton) {
         </div>
     </div>
 </div>
+<?php endif; ?>
 
+
+<?php if ($esAdmin): ?>
 <div id="borrar" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -307,13 +304,11 @@ switch ($boton) {
                             <div id="home" class="container tab-pane active"><br>
                                 <div class="form-group">
                                     <label>Id</label>
-                                    <input type="text" id="delete_txtId" name="txtId" class="form-control"
-                                        value="<?php echo $id ?>" readonly>
+                                    <input type="text" id="delete_txtId" name="txtId" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Descripción</label>
-                                    <input type="text" id="delete_txtDescripcion" name="txtDescripcion" class="form-control"
-                                        value="<?php echo $descripcion ?>" readonly>
+                                    <input type="text" id="delete_txtDescripcion" name="txtDescripcion" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
                                     <?php if ($esAdmin): ?>
@@ -335,6 +330,8 @@ switch ($boton) {
         </div>
     </div>
 </div>
+<?php endif; ?>
+
 
 <?php include "../vista/basePie.html" ?>
 <?php
@@ -361,3 +358,10 @@ ob_end_flush();
         modal.find('#delete_txtDescripcion').val(descripcion);
     });
 </script>
+
+
+
+<?php include "../vista/basePie.html" ?>
+<?php
+ob_end_flush();
+?>

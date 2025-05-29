@@ -106,7 +106,7 @@ switch ($boton) {
                         <h2 class="miEstilo">Gestión <b>Sentido</b></h2>
                     </div>
                     <div class="col-sm-6">
-                        <?php if ($esAdmin): ?>
+                        <?php if ($esAdmin or $esValidador or $esVerificador): ?>
                             <a href="#crudModal" class="btn btn-primary" data-toggle="modal"><i
                                     class="material-icons">&#xE84E;</i> <span>Gestión Sentido</span></a>
                         <?php endif; ?>
@@ -178,8 +178,8 @@ switch ($boton) {
     </div>
 </div>
 
-<?php if ($esAdmin): ?>
-    <div id="crudModal" class="modal fade">
+<?php if ($esAdmin or $esValidador or $esVerificador): ?>
+        <div id="crudModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form action="vistaSentido.php" method="post" id="crudForm">
@@ -198,15 +198,17 @@ switch ($boton) {
                                 <div id="home" class="container tab-pane active"><br>
                                     <div class="form-group">
                                         <label>Id</label>
-                                        <input type="text" id="txtId" name="txtId" class="form-control">
+                                        <input type="text" id="txtId" name="txtId" class="form-control" value="<?php echo $id ?>">
                                     </div>
                                     <div class="form-group">
                                         <label>Nombre</label>
-                                        <input type="text" id="txtNombre" name="txtNombre" class="form-control">
+                                        <input type="text" id="txtNombre" name="txtNombre" class="form-control" value="<?php echo $nombre ?>">
                                     </div>
+                                    <?php if ($esAdmin): ?>
                                     <div class="form-group">
-                                        <input type="submit" id="btnGuardar" name="bt" class="btn btn-success"
-                                            value="Guardar">
+                                        <input type="submit" id="btnGuardar" name="bt" class="btn btn-success" value="Guardar">
+                                      <?php endif; ?>  
+                                        <input type="submit" id="btnConsultar" name="bt" class="btn btn-success" value="Consultar">
                                     </div>
                                 </div>
                                 <div id="menu1" class="container tab-pane fade"><br>
