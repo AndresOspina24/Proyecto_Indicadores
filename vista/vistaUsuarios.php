@@ -11,7 +11,7 @@ ob_start();
 
 	$permisoParaEntrar=false;
 	$listaRolesDelUsuario=$_SESSION['listaRolesDelUsuario'];
-	for($i=0;$i<count($listaRolesDelUsuario);$i++){
+	for($i=0;$i<count($listaRolesDelUsuario);$i++){	
 		if($listaRolesDelUsuario[$i]->__get('nombre')=="admin")$permisoParaEntrar=true;
 	}
 	if(!$permisoParaEntrar)header('Location: ../vista/menu.php');
